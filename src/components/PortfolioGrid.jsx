@@ -11,20 +11,20 @@ export default function PortfolioGrid() {
       <h2 style={{ 
         textAlign: 'center', 
         fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', 
-        marginBottom: '1rem',
+        marginBottom: '0.5rem',
         color: '#D4AF37'
       }}>
-        What I Can Build
+        {t.portfolio.demosSubtitle}
       </h2>
       <p style={{ 
         textAlign: 'center', 
         color: 'rgba(255,255,255,0.7)',
         marginBottom: '3rem',
-        maxWidth: '600px',
+        maxWidth: '700px',
         marginLeft: 'auto',
         marginRight: 'auto'
       }}>
-        Interactive demos showcasing my capabilities. I can create 3D experiences, games, and animated code presentations for your projects.
+        {t.portfolio.demosDescription}
       </p>
       
       <div className="portfolio-grid">

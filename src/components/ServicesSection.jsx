@@ -1,7 +1,7 @@
-import { Code, Palette, Globe, Smartphone, Database, Sparkles, Cpu, Shield } from 'lucide-react'
+import { Code, Palette, Globe, Smartphone, Database, Sparkles, Cpu, GraduationCap } from 'lucide-react'
 import { useLanguage } from './LanguageContext'
 
-const icons = [Code, Palette, Globe, Smartphone, Database, Sparkles, Cpu, Shield]
+const icons = [Code, Palette, Globe, Smartphone, Database, Sparkles, Cpu, GraduationCap]
 
 export default function ServicesSection() {
   const { t } = useLanguage()
@@ -12,8 +12,8 @@ export default function ServicesSection() {
     t.services.mobile,
     t.services.backend,
     t.services.effects,
-    { title: 'Hardware Solutions', desc: 'PC assembly, troubleshooting & maintenance' },
-    { title: 'Technical Training', desc: 'Programming courses for beginners & children' },
+    t.services.hardware,
+    t.services.training,
   ]
 
   return (
@@ -21,7 +21,7 @@ export default function ServicesSection() {
       <h2 style={{ 
         textAlign: 'center', 
         fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', 
-        marginBottom: '1rem',
+        marginBottom: '0.5rem',
         color: '#D4AF37'
       }}>
         {t.services.title}
@@ -31,7 +31,7 @@ export default function ServicesSection() {
         color: 'rgba(255,255,255,0.6)', 
         marginBottom: '3rem'
       }}>
-        Comprehensive solutions for your digital needs
+        {t.services.subtitle}
       </p>
       
       <div style={{

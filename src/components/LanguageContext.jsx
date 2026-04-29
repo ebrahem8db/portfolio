@@ -9,7 +9,6 @@ const translations = {
     heroSubtitle: 'Creative Developer & Designer',
     heroDescription: 'I design and develop exceptional digital experiences. From interactive websites to complex applications, I turn ideas into reality.',
     nav: {
-      home: 'Home',
       portfolio: 'Portfolio',
       services: 'Services',
       about: 'About Me',
@@ -18,16 +17,23 @@ const translations = {
     contactBtn: 'Contact Me',
     services: {
       title: 'My Services',
+      subtitle: 'Comprehensive solutions for your digital needs',
       webDev: { title: 'Web Development', desc: 'Interactive websites using React & Next.js' },
       uiux: { title: 'UI/UX Design', desc: 'Modern designs focused on user experience' },
       webApps: { title: 'Web Applications', desc: 'Complex and integrated applications' },
       mobile: { title: 'Mobile Apps', desc: 'React Native applications' },
       backend: { title: 'Backend', desc: 'Node.js, Python, APIs' },
-      effects: { title: '3D Effects', desc: 'Three.js, WebGL, Animations' }
+      effects: { title: '3D Effects', desc: 'Three.js, WebGL, Animations' },
+      hardware: { title: 'Hardware Solutions', desc: 'PC assembly, troubleshooting & maintenance' },
+      training: { title: 'Technical Training', desc: 'Programming courses for beginners & children' }
+    },
+    tech: {
+      title: 'Technologies I Use',
+      subtitle: 'My technical toolkit for building modern applications'
     },
     about: {
       title: 'About Me',
-      name: 'Ebrahem Al-Thiab',
+      name: 'Ebrahem Al-Diab',
       role: 'Information Engineering Student & Developer',
       summary: 'Highly motivated second-year Information Engineering student at Al-Jazeera Private University. Passionate about software development with practical experience in multiple programming languages and web technologies.',
       education: {
@@ -62,8 +68,11 @@ const translations = {
       }
     },
     portfolio: {
-      title: 'Interactive Portfolio',
-      subtitle: 'Live examples of my technical capabilities',
+      title: 'My Projects',
+      subtitle: 'A collection of my work showcasing various skills and technologies',
+      demosTitle: 'Interactive Demos',
+      demosSubtitle: 'What I Can Build',
+      demosDescription: 'Interactive demos showcasing my capabilities. I can create 3D experiences, games, and animated code presentations for your projects.',
       box3d: { 
         title: '3D Web Design', 
         desc: 'I can design immersive 3D websites using Three.js and WebGL. This demo shows interactive 3D models with real-time rendering.' 
@@ -77,10 +86,17 @@ const translations = {
         desc: 'I can create animated code presentations with syntax highlighting. Perfect for tutorials and showcasing code skills.' 
       }
     },
-
-    hardware: { title: 'Hardware Solutions', desc: 'PC assembly, troubleshooting & maintenance' },
-    training: { title: 'Technical Training', desc: 'Programming courses for beginners & children' },
-
+    contact: {
+      title: 'Contact',
+      subtitle: 'Have a project in mind? Let\'s create something amazing together.',
+      getInTouch: 'Get in Touch',
+      sendMessage: 'Send a Message',
+      namePlaceholder: 'Your Name',
+      emailPlaceholder: 'Your Email',
+      messagePlaceholder: 'Your Message',
+      sendBtn: 'Send Message',
+      sent: 'Sent!'
+    },
     footer: {
       rights: '© 2026 Ebrahem Portfolio',
       madeWith: 'Made with ❤️ and lots of ☕'
@@ -92,7 +108,6 @@ const translations = {
     heroSubtitle: 'مطور ومصمم إبداعي',
     heroDescription: 'أصمم وأطور تجارب رقمية استثنائية. من المواقع التفاعلية إلى التطبيقات المعقدة، أحول الأفكار إلى واقع.',
     nav: {
-      home: 'الرئيسية',
       portfolio: 'الأعمال',
       services: 'الخدمات',
       about: 'عني',
@@ -101,16 +116,23 @@ const translations = {
     contactBtn: 'تواصل معي',
     services: {
       title: 'خدماتي',
+      subtitle: 'حلول شاملة لاحتياجاتك الرقمية',
       webDev: { title: 'تطوير الويب', desc: 'مواقع تفاعلية باستخدام React و Next.js' },
       uiux: { title: 'تصميم UI/UX', desc: 'تصاميم عصرية تركز على تجربة المستخدم' },
       webApps: { title: 'تطبيقات الويب', desc: 'تطبيقات معقدة ومتكاملة' },
       mobile: { title: 'تطبيقات الموبايل', desc: 'تطبيقات React Native' },
       backend: { title: 'الـ Backend', desc: 'Node.js, Python, APIs' },
-      effects: { title: 'تأثيرات 3D', desc: 'Three.js, WebGL, Animations' }
+      effects: { title: 'تأثيرات 3D', desc: 'Three.js, WebGL, Animations' },
+      hardware: { title: 'حلول الهاردوير', desc: 'تجميع وصيانة وتحري أعطال الحاسوب' },
+      training: { title: 'تدريب تقني', desc: 'دورات برمجة للمبتدئين والأطفال' }
+    },
+    tech: {
+      title: 'التقنيات التي أستخدمها',
+      subtitle: 'أدواتي التقنية لبناء التطبيقات الحديثة'
     },
     about: {
       title: 'عني',
-      name: 'إبراهيم الذيب',
+      name: 'إبراهيم الذياب',
       role: 'طالب هندسة المعلومات ومطور',
       summary: 'طالب متحمس في السنة الثانية من هندسة المعلومات في جامعة الجزيرة الخاصة. شغوف بتطوير البرمجيات مع خبرة عملية في لغات برمجة متعددة وتقنيات الويب.',
       education: {
@@ -145,8 +167,11 @@ const translations = {
       }
     },
     portfolio: {
-      title: 'معرض الأعمال التفاعلي',
-      subtitle: 'أمثلة حية على قدراتي التقنية',
+      title: 'مشاريعي',
+      subtitle: 'مجموعة من أعمالي التي تظهر مهاراتي وتقنياتي المختلفة',
+      demosTitle: 'عروض تفاعلية',
+      demosSubtitle: 'ما أستطيع بناؤه',
+      demosDescription: 'عروض تفاعلية تظهر قدراتي. أستطيع إنشاء تجارب ثلاثية الأبعاد وألعاب وعروض أكواد متحركة لمشاريعك.',
       box3d: { 
         title: 'تصميم الويب ثلاثي الأبعاد', 
         desc: 'أستطيع تصميم مواقع 3D غامرة باستخدام Three.js و WebGL. هذا العرض التوضيحي يظهر نماذج ثلاثية الأبعاد تفاعلية مع عرض فوري.' 
@@ -159,11 +184,18 @@ const translations = {
         title: 'أنيميشن الأكواد', 
         desc: 'أستطيع إنشاء عروض أكواد متحركة مع تلوين الصياغة. مثالي للدروس التعليمية وعرض مهارات البرمجة.' 
       }
-      
     },
-    hardware: { title: 'حلول الهاردوير', desc: 'تجميع وصيانة وتحري أعطال الحاسوب' },
-    training: { title: 'تدريب تقني', desc: 'دورات برمجة للمبتدئين والأطفال' },
-    
+    contact: {
+      title: 'تواصل',
+      subtitle: 'هل لديك مشروع في بالك؟ لننشئ شيئاً رائعاً معاً.',
+      getInTouch: 'تواصل معي',
+      sendMessage: 'أرسل رسالة',
+      namePlaceholder: 'اسمك',
+      emailPlaceholder: 'بريدك الإلكتروني',
+      messagePlaceholder: 'رسالتك',
+      sendBtn: 'إرسال الرسالة',
+      sent: 'تم الإرسال!'
+    },
     footer: {
       rights: '© 2026 إبراهيم بورتفوليو',
       madeWith: 'صنع بـ ❤️ وكثير من ☕'

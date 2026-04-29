@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Menu, X, ChevronDown, Globe } from 'lucide-react'
+import { Menu, X, Globe } from 'lucide-react'
 import { useLanguage } from './LanguageContext'
 
 export default function Navigation() {
@@ -16,6 +16,15 @@ export default function Navigation() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => { document.body.style.overflow = 'unset' }
+  }, [isOpen])
 
   const handleNavClick = (href) => {
     setIsOpen(false)
@@ -39,7 +48,6 @@ export default function Navigation() {
   }
 
   const navItems = [
-    { label: t.nav.home, href: '/' },
     { label: t.nav.portfolio, href: '/portfolio' },
     { label: t.nav.services, href: '/#services' },
     { label: t.nav.about, href: '/about' },
@@ -56,7 +64,7 @@ export default function Navigation() {
       <nav style={{
         position: 'fixed',
         top: 0, right: 0, left: 0,
-        padding: '0.8rem 2rem',
+        padding: '0.8rem 1.5rem',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -66,13 +74,14 @@ export default function Navigation() {
         borderBottom: scrolled ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid rgba(212, 175, 55, 0.1)',
         transition: 'all 0.3s ease'
       }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
+        {/* Logo - Click to go Home */}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', zIndex: 102 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <img 
             src="/logo.png" 
             alt="Ebrahem Logo" 
             style={{ 
-              height: '45px', 
+              height: '40px', 
               width: 'auto',
               objectFit: 'contain',
               filter: 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.3))'
@@ -92,7 +101,8 @@ export default function Navigation() {
             EB
           </span>
         </Link>
-        
+
+        {/* Desktop Nav */}
         <div className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
           {navItems.map(item => {
             const active = isActive(item.href)
@@ -119,6 +129,7 @@ export default function Navigation() {
             )
           })}
 
+          {/* Language Dropdown Desktop */}
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => setLangDropdown(!langDropdown)}
@@ -138,10 +149,6 @@ export default function Navigation() {
             >
               <Globe size={16} />
               {lang === 'en' ? 'EN' : 'عربي'}
-              <ChevronDown size={14} style={{ 
-                transform: langDropdown ? 'rotate(180deg)' : 'rotate(0)',
-                transition: 'transform 0.2s'
-              }} />
             </button>
 
             {langDropdown && (
@@ -154,7 +161,8 @@ export default function Navigation() {
                 borderRadius: '8px',
                 overflow: 'hidden',
                 minWidth: '120px',
-                backdropFilter: 'blur(10px)'
+                backdropFilter: 'blur(10px)',
+                zIndex: 200
               }}>
                 <button
                   onClick={() => {
@@ -169,8 +177,7 @@ export default function Navigation() {
                     color: lang === 'en' ? '#D4AF37' : 'white',
                     cursor: 'pointer',
                     textAlign: 'left',
-                    fontSize: '0.85rem',
-                    transition: 'all 0.2s'
+                    fontSize: '0.85rem'
                   }}
                 >
                   🇺🇸 English
@@ -189,7 +196,6 @@ export default function Navigation() {
                     cursor: 'pointer',
                     textAlign: 'left',
                     fontSize: '0.85rem',
-                    transition: 'all 0.2s',
                     borderTop: '1px solid rgba(212, 175, 55, 0.1)'
                   }}
                 >
@@ -200,28 +206,60 @@ export default function Navigation() {
           </div>
         </div>
 
+        {/* Mobile Menu Button */}
         <button 
-          className="mobile-menu"
+          className="mobile-menu-btn"
           onClick={() => setIsOpen(!isOpen)}
-          style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+          style={{ 
+            background: 'none', 
+            border: 'none', 
+            color: 'white', 
+            cursor: 'pointer',
+            zIndex: 102,
+            padding: '0.5rem'
+          }}
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={24} color="#D4AF37" /> : <Menu size={24} />}
         </button>
       </nav>
 
-      {isOpen && (
-        <div style={{
+      {/* Mobile Side Slide Menu */}
+      <div 
+        className="mobile-side-menu"
+        style={{
           position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
+          top: 0,
+          [lang === 'ar' ? 'left' : 'right']: 0,
+          width: '280px',
+          height: '100vh',
           background: 'rgba(5, 5, 5, 0.98)',
-          zIndex: 99,
+          backdropFilter: 'blur(20px)',
+          zIndex: 101,
+          transform: isOpen ? 'translateX(0)' : `translateX(${lang === 'ar' ? '-100%' : '100%'})`,
+          transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '2rem',
-          paddingTop: '80px'
-        }}>
+          padding: '6rem 2rem 2rem',
+          borderLeft: lang === 'ar' ? 'none' : '1px solid rgba(212, 175, 55, 0.2)',
+          borderRight: lang === 'ar' ? '1px solid rgba(212, 175, 55, 0.2)' : 'none',
+        }}
+      >
+        <button
+          onClick={() => setIsOpen(false)}
+          style={{
+            position: 'absolute',
+            top: '1.5rem',
+            [lang === 'ar' ? 'left' : 'right']: '1.5rem',
+            background: 'none',
+            border: 'none',
+            color: '#D4AF37',
+            cursor: 'pointer'
+          }}
+        >
+          <X size={24} />
+        </button>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {navItems.map(item => (
             <button
               key={item.href}
@@ -231,32 +269,43 @@ export default function Navigation() {
                 background: 'none',
                 border: 'none',
                 textDecoration: 'none',
-                fontSize: '1.5rem',
+                fontSize: '1.3rem',
                 fontWeight: isActive(item.href) ? '700' : '400',
                 cursor: 'pointer',
-                fontFamily: 'inherit'
+                fontFamily: 'inherit',
+                textAlign: lang === 'ar' ? 'right' : 'left',
+                padding: '0.5rem 0',
+                borderBottom: '1px solid rgba(212, 175, 55, 0.1)',
+                transition: 'color 0.3s'
               }}
             >
               {item.label}
             </button>
           ))}
-          
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+        </div>
+
+        <div style={{ marginTop: 'auto', paddingTop: '2rem' }}>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', marginBottom: '1rem' }}>
+            Language / اللغة
+          </p>
+          <div style={{ display: 'flex', gap: '1rem' }}>
             <button
               onClick={() => {
                 if (lang !== 'en') toggleLang()
                 setIsOpen(false)
               }}
               style={{
-                padding: '0.5rem 1rem',
-                border: lang === 'en' ? '1px solid #D4AF37' : '1px solid rgba(255,255,255,0.3)',
+                flex: 1,
+                padding: '0.8rem',
+                border: lang === 'en' ? '2px solid #D4AF37' : '1px solid rgba(255,255,255,0.3)',
                 background: lang === 'en' ? 'rgba(212, 175, 55, 0.2)' : 'transparent',
                 color: lang === 'en' ? '#D4AF37' : 'white',
-                borderRadius: '6px',
-                cursor: 'pointer'
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontWeight: lang === 'en' ? '600' : '400'
               }}
             >
-              EN
+              🇺🇸 English
             </button>
             <button
               onClick={() => {
@@ -264,18 +313,34 @@ export default function Navigation() {
                 setIsOpen(false)
               }}
               style={{
-                padding: '0.5rem 1rem',
-                border: lang === 'ar' ? '1px solid #D4AF37' : '1px solid rgba(255,255,255,0.3)',
+                flex: 1,
+                padding: '0.8rem',
+                border: lang === 'ar' ? '2px solid #D4AF37' : '1px solid rgba(255,255,255,0.3)',
                 background: lang === 'ar' ? 'rgba(212, 175, 55, 0.2)' : 'transparent',
                 color: lang === 'ar' ? '#D4AF37' : 'white',
-                borderRadius: '6px',
-                cursor: 'pointer'
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontWeight: lang === 'ar' ? '600' : '400'
               }}
             >
-              عربي
+              🇸🇦 العربية
             </button>
           </div>
         </div>
+      </div>
+
+      {isOpen && (
+        <div 
+          onClick={() => setIsOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(0, 0, 0, 0.6)',
+            zIndex: 100,
+            backdropFilter: 'blur(4px)',
+            transition: 'opacity 0.3s'
+          }}
+        />
       )}
     </>
   )

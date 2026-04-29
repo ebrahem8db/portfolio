@@ -1,7 +1,6 @@
 import { useLanguage } from '../components/LanguageContext'
 import { ShoppingCart, Palette, BarChart3, Smartphone, Bot, Gamepad2, ExternalLink } from 'lucide-react'
 
-// سهل الإضافة - أضف مشروع جديد هنا
 const projects = [
   { 
     id: 1,
@@ -33,18 +32,6 @@ const projects = [
     color: '#CD7F32',
     link: '#'
   },
-
-   { 
-    id: 7,
-    title: 'E-Commerce WordPress platform', 
-    category: 'Web site', 
-    description: 'Full-featured online store with payment integration',
-    tech: ['WordPress', 'WooCommerce', 'PHP' ], 
-    Icon: ShoppingCart, 
-    color: '#D4AF37',
-    link: 'https://yaqeen-store.com/'
-  },
-
   { 
     id: 4,
     title: 'Mobile Banking App', 
@@ -84,10 +71,10 @@ export default function PortfolioPage() {
     <main style={{ paddingTop: '2rem' }}>
       <section style={{ textAlign: 'center', padding: '3rem 2rem' }}>
         <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: '#D4AF37', marginBottom: '1rem' }}>
-          My Projects
+          {t.portfolio.title}
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.7)', maxWidth: '600px', margin: '0 auto' }}>
-          A collection of my work showcasing various skills and technologies
+          {t.portfolio.subtitle}
         </p>
       </section>
 
@@ -126,35 +113,21 @@ export default function PortfolioPage() {
                   e.currentTarget.style.boxShadow = 'none'
                 }}
               >
-                {/* Glow effect on hover */}
-                <div style={{
-                  position: 'absolute',
-                  top: '-50%',
-                  right: '-50%',
-                  width: '200%',
-                  height: '200%',
-                  background: `radial-gradient(circle, ${project.color}08 0%, transparent 70%)`,
-                  opacity: 0,
-                  transition: 'opacity 0.4s'
-                }} className="project-glow" />
-
                 <div style={{ 
                   width: '60px', 
                   height: '60px', 
-                  borderRadius: '16px', 
-                  background: `linear-gradient(135deg, ${project.color}25, ${project.color}10)`,
+                  borderRadius: '12px', 
+                  background: `${project.color}15`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginBottom: '1.2rem',
-                  border: `1px solid ${project.color}30`,
-                  transition: 'all 0.3s'
+                  marginBottom: '1rem'
                 }}>
                   <IconComponent size={28} color={project.color} />
                 </div>
-
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.6rem' }}>
                   <span style={{
+                    display: 'inline-block',
                     padding: '0.25rem 0.7rem',
                     background: `${project.color}18`,
                     color: project.color,
@@ -168,11 +141,9 @@ export default function PortfolioPage() {
                   </span>
                   <ExternalLink size={14} color="rgba(255,255,255,0.4)" />
                 </div>
-
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'white' }}>
                   {project.title}
                 </h3>
-                
                 <p style={{ 
                   color: 'rgba(255,255,255,0.6)', 
                   fontSize: '0.9rem',
@@ -181,14 +152,13 @@ export default function PortfolioPage() {
                 }}>
                   {project.description}
                 </p>
-
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                   {project.tech.map((tech, j) => (
                     <span key={j} style={{
-                      padding: '0.3rem 0.7rem',
+                      padding: '0.2rem 0.6rem',
                       background: 'rgba(212, 175, 55, 0.08)',
                       border: '1px solid rgba(212, 175, 55, 0.15)',
-                      borderRadius: '6px',
+                      borderRadius: '4px',
                       fontSize: '0.78rem',
                       color: 'rgba(255,255,255,0.7)'
                     }}>

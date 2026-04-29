@@ -9,6 +9,7 @@ export default function SnakeGameBox() {
     snake: [{ x: 10, y: 10 }],
     food: { x: 15, y: 15 },
     direction: { x: 0, y: 0 },
+    nextDirection: { x: 0, y: 0 },
     gameLoop: null
   })
 
@@ -59,8 +60,8 @@ export default function SnakeGameBox() {
         (segment.x + 1) * CELL_SIZE,
         (segment.y + 1) * CELL_SIZE
       )
-      gradient.addColorStop(0, index === 0 ? '#00D4FF' : '#0099CC')
-      gradient.addColorStop(1, index === 0 ? '#66E0FF' : '#00D4FF')
+      gradient.addColorStop(0, index === 0 ? '#D4AF37' : '#B8860B')
+      gradient.addColorStop(1, index === 0 ? '#F4C430' : '#D4AF37')
       
       ctx.fillStyle = gradient
       ctx.fillRect(
@@ -72,22 +73,18 @@ export default function SnakeGameBox() {
 
       if (index === 0) {
         ctx.fillStyle = 'white'
-        ctx.fillRect(
-          segment.x * CELL_SIZE + 3,
-          segment.y * CELL_SIZE + 4,
-          3, 3
-        )
-        ctx.fillRect(
-          segment.x * CELL_SIZE + 9,
-          segment.y * CELL_SIZE + 4,
-          3, 3
-        )
+        ctx.fillRect(segment.x * CELL_SIZE + 3, segment.y * CELL_SIZE + 4, 3, 3)
+        ctx.fillRect(segment.x * CELL_SIZE + 9, segment.y * CELL_SIZE + 4, 3, 3)
       }
     })
   }, [])
 
   const update = useCallback(() => {
     const game = gameRef.current
+    game.direction = { ...game.nextDirection }
+    
+    if (game.direction.x === 0 && game.direction.y === 0) return
+
     const head = { ...game.snake[0] }
     head.x += game.direction.x
     head.y += game.direction.y
@@ -99,7 +96,8 @@ export default function SnakeGameBox() {
 
     if (game.snake.some(s => s.x === head.x && s.y === head.y)) {
       game.snake = [{ x: 10, y: 10 }]
-      game.direction = { x: 1, y: 0 }
+      game.direction = { x: 0, y: 0 }
+      game.nextDirection = { x: 0, y: 0 }
       setScore(0)
       return
     }
@@ -123,17 +121,17 @@ export default function SnakeGameBox() {
     const handleKeyDown = (e) => {
       const game = gameRef.current
       switch (e.key) {
-        case 'ArrowUp':
-          if (game.direction.y === 0) game.direction = { x: 0, y: -1 }
+        case 'ArrowUp': 
+          if (game.direction.y === 0) game.nextDirection = { x: 0, y: -1 }
           break
-        case 'ArrowDown':
-          if (game.direction.y === 0) game.direction = { x: 0, y: 1 }
+        case 'ArrowDown': 
+          if (game.direction.y === 0) game.nextDirection = { x: 0, y: 1 }
           break
-        case 'ArrowLeft':
-          if (game.direction.x === 0) game.direction = { x: -1, y: 0 }
+        case 'ArrowLeft': 
+          if (game.direction.x === 0) game.nextDirection = { x: -1, y: 0 }
           break
-        case 'ArrowRight':
-          if (game.direction.x === 0) game.direction = { x: 1, y: 0 }
+        case 'ArrowRight': 
+          if (game.direction.x === 0) game.nextDirection = { x: 1, y: 0 }
           break
       }
     }
@@ -148,6 +146,63 @@ export default function SnakeGameBox() {
     }
   }, [update, draw])
 
+  // Touch controls
+  const handleTouchStart = useCallback((e) => {
+    const touch = e.touches[0]
+    const game = gameRef.current
+    
+    game.touchStartX = touch.clientX
+    game.touchStartY = touch.clientY
+  }, [])
+
+  const handleTouchEnd = useCallback((e) => {
+    const touch = e.changedTouches[0]
+    const game = gameRef.current
+    
+    if (!game.touchStartX || !game.touchStartY) return
+    
+    const diffX = touch.clientX - game.touchStartX
+    const diffY = touch.clientY - game.touchStartY
+    
+    const minSwipe = 30 // minimum swipe distance
+    
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      // Horizontal swipe
+      if (Math.abs(diffX) > minSwipe) {
+        if (diffX > 0 && game.direction.x === 0) {
+          game.nextDirection = { x: 1, y: 0 }
+        } else if (diffX < 0 && game.direction.x === 0) {
+          game.nextDirection = { x: -1, y: 0 }
+        }
+      }
+    } else {
+      // Vertical swipe
+      if (Math.abs(diffY) > minSwipe) {
+        if (diffY > 0 && game.direction.y === 0) {
+          game.nextDirection = { x: 0, y: 1 }
+        } else if (diffY < 0 && game.direction.y === 0) {
+          game.nextDirection = { x: 0, y: -1 }
+        }
+      }
+    }
+    
+    game.touchStartX = null
+    game.touchStartY = null
+  }, [])
+
+  // Button controls for mobile
+  const handleDirectionButton = useCallback((dx, dy) => {
+    const game = gameRef.current
+    if (game.direction.x === -dx && game.direction.y === -dy) return // prevent reverse
+    if (game.direction.x === dx && game.direction.y === dy) return // same direction
+    
+    if (dx !== 0 && game.direction.x === 0) {
+      game.nextDirection = { x: dx, y: 0 }
+    } else if (dy !== 0 && game.direction.y === 0) {
+      game.nextDirection = { x: 0, y: dy }
+    }
+  }, [])
+
   return (
     <div className="box-card">
       <h3 style={{ color: '#D4AF37', marginBottom: '0.5rem', fontSize: '1.2rem' }}>
@@ -159,18 +214,68 @@ export default function SnakeGameBox() {
       <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
         Score: {score}
       </p>
-      <canvas
-        ref={canvasRef}
-        width={GRID_SIZE * CELL_SIZE}
-        height={GRID_SIZE * CELL_SIZE}
-        style={{
-          borderRadius: '12px',
-          border: '1px solid rgba(212, 175, 55, 0.3)',
-          display: 'block',
-          margin: '0 auto',
-          maxWidth: '100%'
+      
+      {/* Game Canvas with Touch */}
+      <div 
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        style={{ 
+          touchAction: 'none',
+          userSelect: 'none',
+          WebkitUserSelect: 'none'
         }}
-      />
+      >
+        <canvas
+          ref={canvasRef}
+          width={GRID_SIZE * CELL_SIZE}
+          height={GRID_SIZE * CELL_SIZE}
+          style={{
+            borderRadius: '12px',
+            border: '1px solid rgba(212, 175, 55, 0.3)',
+            display: 'block',
+            margin: '0 auto',
+            maxWidth: '100%',
+            touchAction: 'none'
+          }}
+        />
+      </div>
+
+      {/* Mobile Direction Buttons */}
+      <div className="mobile-controls" style={{
+        display: 'none',
+        marginTop: '1rem',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '0.5rem'
+      }}>
+        <button 
+          onClick={() => handleDirectionButton(0, -1)}
+          style={directionBtnStyle}
+        >
+          ▲
+        </button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button 
+            onClick={() => handleDirectionButton(-1, 0)}
+            style={directionBtnStyle}
+          >
+            ◀
+          </button>
+          <button 
+            onClick={() => handleDirectionButton(1, 0)}
+            style={directionBtnStyle}
+          >
+            ▶
+          </button>
+        </div>
+        <button 
+          onClick={() => handleDirectionButton(0, 1)}
+          style={directionBtnStyle}
+        >
+          ▼
+        </button>
+      </div>
+
       <p style={{ 
         color: 'rgba(255,255,255,0.5)', 
         fontSize: '0.8rem',
@@ -181,4 +286,19 @@ export default function SnakeGameBox() {
       </p>
     </div>
   )
+}
+
+const directionBtnStyle = {
+  width: '50px',
+  height: '50px',
+  borderRadius: '12px',
+  border: '1px solid rgba(212, 175, 55, 0.4)',
+  background: 'rgba(212, 175, 55, 0.15)',
+  color: '#D4AF37',
+  fontSize: '1.2rem',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'all 0.2s'
 }

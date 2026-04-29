@@ -14,13 +14,13 @@ export default function ContactPage() {
   }
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'ebrahem8db@gmail.com' },
+    { icon: Mail, label: 'Email', value: 'ebrahem@example.com' },
     { icon: Phone, label: 'Phone', value: '+963 988 643 661' },
-    { icon: MapPin, label: 'Location', value: 'Available Worldwide' },
+    { icon: MapPin, label: 'Location', value: 'Syria / Remote Worldwide' },
   ]
 
   const socials = [
-    { icon: Camera, label: 'Instagram', href: '#' },
+    { icon: Camera, label: 'Instagram', href: 'https://www.instagram.com/ebrahem.db?igsh=MTZmN291b2NwdW8z' },
     { icon: Globe, label: 'Website', href: '#' },
   ]
 
@@ -31,7 +31,7 @@ export default function ContactPage() {
           {t.nav.contact}
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.7)', maxWidth: '600px', margin: '0 auto' }}>
-          Have a project in mind? Let's create something amazing together.
+          {t.contact.subtitle}
         </p>
       </section>
 
@@ -43,7 +43,7 @@ export default function ContactPage() {
         }}>
           <div>
             <h3 style={{ color: '#D4AF37', marginBottom: '2rem', fontSize: '1.5rem' }}>
-              Get in Touch
+              {t.contact.getInTouch}
             </h3>
             
             {contactInfo.map((item, i) => (
@@ -111,26 +111,26 @@ export default function ContactPage() {
             border: '1px solid rgba(212, 175, 55, 0.2)'
           }}>
             <h3 style={{ color: '#D4AF37', marginBottom: '1.5rem', fontSize: '1.3rem' }}>
-              Send a Message
+              {t.contact.sendMessage}
             </h3>
             
             <form onSubmit={handleSubmit} className="contact-form">
               <input
                 type="text"
-                placeholder="Your Name"
+                placeholder={t.contact.namePlaceholder}
                 value={formData.name}
                 onChange={e => setFormData({...formData, name: e.target.value})}
                 required
               />
               <input
                 type="email"
-                placeholder="Your Email"
+                placeholder={t.contact.emailPlaceholder}
                 value={formData.email}
                 onChange={e => setFormData({...formData, email: e.target.value})}
                 required
               />
               <textarea
-                placeholder="Your Message"
+                placeholder={t.contact.messagePlaceholder}
                 rows="5"
                 value={formData.message}
                 onChange={e => setFormData({...formData, message: e.target.value})}
@@ -139,7 +139,7 @@ export default function ContactPage() {
               />
               <button type="submit" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Send size={18} />
-                {submitted ? 'Sent!' : 'Send Message'}
+                {submitted ? t.contact.sent : t.contact.sendBtn}
               </button>
             </form>
           </div>

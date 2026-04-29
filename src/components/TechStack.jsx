@@ -26,18 +26,17 @@ export default function TechStack() {
       <h2 style={{ 
         textAlign: 'center', 
         fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', 
-        marginBottom: '1rem',
+        marginBottom: '0.5rem',
         color: '#D4AF37'
       }}>
-        Technologies I Use
+        {t.tech.title}
       </h2>
       <p style={{ 
         textAlign: 'center', 
         color: 'rgba(255,255,255,0.6)', 
-        marginBottom: '3rem',
-        fontSize: '1rem'
+        marginBottom: '3rem'
       }}>
-        My technical toolkit for building modern applications
+        {t.tech.subtitle}
       </p>
       
       <div style={{
